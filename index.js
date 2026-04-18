@@ -1,12 +1,12 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
-const userRoutes = require("./src/Router/user");
-const complaintRoutes = require("./src/Router/complaint");
-const adminRoutes = require("./src/Router/adminLogRoute");
-const verificationRoutes = require("./src/Router/verificationRouter");
-const { initializeSocket } = require("./src/Router/adminRoute"); // Import socket file
-require("./src/Config/DBConfig");
+const userRoutes = require("./Router/user");
+const complaintRoutes = require("./Router/complaint");
+const adminRoutes = require("./Router/adminLogRoute");
+const verificationRoutes = require("./Router/verificationRouter");
+const { initializeSocket } = require("./Router/adminRoute");
+require("./Config/DBConfig");
 const path = require("path")
 const app = express();
 const server = http.createServer(app); // Create HTTP server
@@ -33,10 +33,10 @@ app.use("/user/verify", verificationRoutes);
 app.use("/admin", adminRoutes);
 
 
-app.use(express.static(path.join(_dirName, "/Frontend/dist")))
+/*app.use(express.static(path.join(_dirName, "/Frontend/dist")))
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(_dirName, "Frontend", "dist", "index.html"));
-})
+})*/
 
 // Initialize WebSocket
 initializeSocket(server);
