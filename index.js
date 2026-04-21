@@ -1,27 +1,35 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
-const userRoutes = require("./Router/user");
-const complaintRoutes = require("./Router/complaint");
-const adminRoutes = require("./Router/adminLogRoute");
-const verificationRoutes = require("./Router/verificationRouter");
-const { initializeSocket } = require("./Router/adminRoute"); // Import socket file
-require("./Config/DBConfig");
-const path = require("path")
-const app = express();
-const server = http.createServer(app); // Create HTTP server
 const dotenv = require("dotenv");
+const path = require("path");
+
+// Load env variables FIRST
 dotenv.config();
 
-const _dirName = path.resolve()
+// App setup
+const app = express();
+const server = http.createServer(app);
 
-// Middleware 4
+// Correct path base
+const __dirnameResolved = path.resolve();
 
+// ✅ Correct imports (FIXED PATHS)
+const userRoutes = require("./src/Router/user");
+const complaintRoutes = require("./src/Router/complaint");
+const adminRoutes = require("./src/Router/adminLogRoute");
+const verificationRoutes = require("./src/Router/verificationRouter");
+const { initializeSocket } = require("./src/Router/adminRoute");
+
+require("./src/Config/DBConfig");
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use(
   cors({
-    origin: process.env.url,
+    origin: process.env.url || "*", // fallback for safety
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -33,16 +41,16 @@ app.use("/user/complaint", complaintRoutes);
 app.use("/user/verify", verificationRoutes);
 app.use("/admin", adminRoutes);
 
-
-/*app.use(express.static(path.join(_dirName, "/Frontend/dist")))
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(_dirName, "Frontend", "dist", "index.html"));
-})*/
+// (Optional frontend serving)
+// app.use(express.static(path.join(__dirnameResolved, "Frontend/dist")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirnameResolved, "Frontend", "dist", "index.html"));
+// });
 
 // Initialize WebSocket
 initializeSocket(server);
 
-// Start Server
+// Start server
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
