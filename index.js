@@ -5,7 +5,7 @@ const userRoutes = require("./Router/user");
 const complaintRoutes = require("./Router/complaint");
 const adminRoutes = require("./Router/adminLogRoute");
 const verificationRoutes = require("./Router/verificationRouter");
-const { initializeSocket } = require("./Router/adminRoute");
+const { initializeSocket } = require("./Router/adminRoute"); // Import socket file
 require("./Config/DBConfig");
 const path = require("path")
 const app = express();
@@ -15,7 +15,8 @@ dotenv.config();
 
 const _dirName = path.resolve()
 
-// Middleware
+// Middleware 4
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
