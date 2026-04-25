@@ -1,3 +1,4 @@
+console.log("NEW VERSION DEPLOYED");
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
@@ -40,7 +41,9 @@ app.use("/user", userRoutes);
 app.use("/user/complaint", complaintRoutes);
 app.use("/user/verify", verificationRoutes);
 app.use("/admin", adminRoutes);
-
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully 🚀");
+});
 // (Optional frontend serving)
 // app.use(express.static(path.join(__dirnameResolved, "Frontend/dist")));
 // app.get("*", (req, res) => {
